@@ -15,7 +15,7 @@ import java.util.Set;
 @Accessors(chain = true)
 public class BankAccount {
 
-    @Id
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private Double balance;
     private Double creditAvailable;

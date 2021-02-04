@@ -12,7 +12,7 @@ import javax.persistence.*;
 @Accessors(chain = true)
 public class AtmMachine {
 
-    @Id
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @EqualsAndHashCode.Exclude @ToString.Exclude

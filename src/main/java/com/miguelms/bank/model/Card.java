@@ -3,10 +3,7 @@ package com.miguelms.bank.model;
 import lombok.*;
 import lombok.experimental.Accessors;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.ManyToOne;
-import java.util.Date;
+import javax.persistence.*;
 
 @Entity
 @Data
@@ -15,7 +12,7 @@ import java.util.Date;
 @Accessors(chain = true)
 public class Card {
 
-    @Id
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String cardNumber;
     private CardType cardType;

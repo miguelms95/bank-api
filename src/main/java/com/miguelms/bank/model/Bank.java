@@ -1,17 +1,13 @@
 package com.miguelms.bank.model;
 
-import com.sun.org.apache.bcel.internal.generic.BALOAD;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
+import javax.persistence.*;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 
 @Entity
@@ -20,7 +16,7 @@ import java.util.Set;
 @Accessors(chain = true)
 public class Bank {
 
-    @Id
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
     private Double taxesForOtherBanks;

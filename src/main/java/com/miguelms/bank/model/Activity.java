@@ -3,9 +3,7 @@ package com.miguelms.bank.model;
 import lombok.*;
 import lombok.experimental.Accessors;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.ManyToOne;
+import javax.persistence.*;
 import java.util.Date;
 
 @Entity
@@ -15,7 +13,7 @@ import java.util.Date;
 @Accessors(chain = true)
 public class Activity {
 
-    @Id
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private ActivityType activityType;
     private double quantity;
