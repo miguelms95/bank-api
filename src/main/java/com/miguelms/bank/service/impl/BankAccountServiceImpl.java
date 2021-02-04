@@ -1,5 +1,6 @@
 package com.miguelms.bank.service.impl;
 
+import com.miguelms.bank.dao.BankAccountDAO;
 import com.miguelms.bank.model.BankAccount;
 import com.miguelms.bank.model.Card;
 import com.miguelms.bank.model.User;
@@ -36,7 +37,7 @@ public class BankAccountServiceImpl implements BankAccountService {
         if (card.isPresent()) {
             User user = card.get().getUser();
             Iterable <BankAccount> accounts = bankAccountRepository.findAll();
-            List<BankAccount> result = new ArrayList <>();
+            List<BankAccount> result = new ArrayList <>(); // crazy findAll and filter at application level
             accounts.forEach(account -> {
                 if(account.getUsers().contains(user))
                     result.add(account);
@@ -46,5 +47,11 @@ public class BankAccountServiceImpl implements BankAccountService {
         }
 
         return new ArrayList <>();
+    }
+
+    @Override
+    public List <BankAccountDAO> getBankAccountsbyUserId(Long userId) {
+        List<BankAccountDAO> b = userRepository.getBankAccountsFromUserId(userId);
+        return b;
     }
 }

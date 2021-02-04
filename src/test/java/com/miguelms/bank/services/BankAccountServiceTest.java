@@ -1,6 +1,6 @@
 package com.miguelms.bank.services;
 
-import com.miguelms.bank.model.BankAccount;
+import com.miguelms.bank.dao.BankAccountDAO;
 import com.miguelms.bank.service.BankAccountService;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
@@ -20,8 +20,8 @@ public class BankAccountServiceTest {
     @Test
     public void testGetBankAccountsbyCardNumber(){
 
-        List <BankAccount> list = service.getBankAccountsbyCardNumber("11112222333344445555");
-        for (BankAccount bankAccount : list) {
+        List <BankAccountDAO> list = service.getBankAccountsbyUserId(1l);
+        for (BankAccountDAO bankAccount : list) {
             log.info(bankAccount.toString());
         }
         Assert.isTrue(!list.isEmpty(), "no bank account detected");
