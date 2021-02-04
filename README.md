@@ -23,6 +23,11 @@ I've decided to use an H2 database, because it's embedded in the server, lightwe
 * Activate card
 [http://localhost:8080/activate_card?cardNumber=11112222333344445555](http://localhost:8080/activate_card?cardNumber=11112222333344445555)
 
+* Get bank accounts:
+
+   * OK query (200): [http://localhost:8080/accounts?cardNumber=1111222233334444&pin=1234](http://localhost:8080/accounts?cardNumber=1111222233334444&pin=1234)
+
+   * ERROR query (400): [http://localhost:8080/accounts?cardNumber=1111222233334444&pin=12345](http://localhost:8080/accounts?cardNumber=1111222233334444&pin=12345)
 * Get Money from account
 [http://localhost:8080/getMoney?bankAccountId=1&quantity=50](http://localhost:8080/getMoney?bankAccountId=1&quantity=50)
 
