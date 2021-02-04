@@ -1,13 +1,14 @@
 package com.miguelms.bank.model;
 
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
 import lombok.experimental.Accessors;
 
 import javax.persistence.*;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 @Entity
 @Data
@@ -27,7 +28,7 @@ public class BankAccount {
 
     @EqualsAndHashCode.Exclude @ToString.Exclude
     @ManyToMany
-    private Set <User> users;
+    private List <User> users;
 
     @EqualsAndHashCode.Exclude
     @ManyToMany
@@ -38,7 +39,7 @@ public class BankAccount {
     private List <Activity> activity;
 
     public BankAccount(){
-        users = new HashSet <>();
+        users = new ArrayList <>();
         activity = new ArrayList <>();
         cards = new ArrayList <>();
     }
@@ -49,7 +50,7 @@ public class BankAccount {
         return this;
     }
 
-    public BankAccount setUsers(Set<User> users){
+    public BankAccount setUsers(ArrayList<User> users){
         for (User user : users) {
             user.getBankAccounts().add(this);
         }

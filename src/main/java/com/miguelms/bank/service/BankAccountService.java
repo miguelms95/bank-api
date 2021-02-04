@@ -6,6 +6,6 @@ import java.util.List;
 
 public interface BankAccountService {
 
-    List <BankAccount> getBankAccounts(String cardNumber);
+    List <BankAccount> getBankAccountsbyCardNumber(String cardNumber);
 
 }

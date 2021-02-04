@@ -1,16 +1,13 @@
 package com.miguelms.bank.unit;
 
 import com.miguelms.bank.model.*;
-import com.sun.xml.internal.ws.policy.AssertionSet;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
-import org.springframework.boot.autoconfigure.security.SecurityProperties;
 import org.springframework.util.Assert;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
-import java.util.HashSet;
-import java.util.Set;
 
 @Slf4j
 public class BankTest {
@@ -48,7 +45,7 @@ public class BankTest {
         Bank bank = new Bank().setId(1l).setName("ING");
         BankAccount account = new BankAccount().setId(1l).setBank(bank).setBalance(100.0);
 
-        User user = new User().setId(1l).setName("Miguel Martinez").setBankAccounts(new HashSet <>(Arrays.asList(account)));
+        User user = new User().setId(1l).setName("Miguel Martinez").setBankAccounts(new ArrayList <>(Arrays.asList(account)));
 
         log.info(bank.toString());
         log.info(account.toString());

@@ -15,6 +15,7 @@ public class Card {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String cardNumber;
+    @Enumerated
     private CardType cardType;
     private boolean active;
     private String pin; // encoded

@@ -7,8 +7,8 @@ import lombok.ToString;
 import lombok.experimental.Accessors;
 
 import javax.persistence.*;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Data
@@ -21,20 +21,20 @@ public class User {
     private String name;
 
     public User() {
-        bankAccounts = new HashSet <>();
-        cards = new HashSet <>();
+        bankAccounts = new ArrayList <>();
+        cards = new ArrayList <>();
     }
 
     @EqualsAndHashCode.Exclude
     @ManyToMany
-    private Set <BankAccount> bankAccounts;
+    private List <BankAccount> bankAccounts;
 
     @EqualsAndHashCode.Exclude
     @ToString.Exclude
     @ManyToMany
-    private Set <Card> cards;
+    private List <Card> cards;
 
-    public User setBankAccounts(Set<BankAccount> bankAccounts){
+    public User setBankAccounts(List<BankAccount> bankAccounts){
         this.bankAccounts = bankAccounts;
         for (BankAccount bankAccount : bankAccounts) {
             bankAccount.getUsers().add(this);

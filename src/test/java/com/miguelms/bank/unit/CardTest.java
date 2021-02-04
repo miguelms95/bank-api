@@ -2,16 +2,12 @@ package com.miguelms.bank.unit;
 
 import com.miguelms.bank.model.*;
 import com.miguelms.bank.utils.Utils;
-import com.sun.xml.internal.ws.policy.AssertionSet;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import org.springframework.util.Assert;
-import org.springframework.util.DigestUtils;
 
+import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.Set;
 
 @Slf4j
 public class CardTest {
@@ -20,7 +16,7 @@ public class CardTest {
     public void testBankAccount() {
         Bank bank = new Bank().setId(1l).setName("ING");
         BankAccount account = new BankAccount().setId(1l).setBank(bank).setBalance(100.0);
-        User user = new User().setId(1l).setName("Miguel Martinez").setBankAccounts(new HashSet <>(Arrays.asList(account)));
+        User user = new User().setId(1l).setName("Miguel Martinez").setBankAccounts(new ArrayList <>(Arrays.asList(account)));
 
         Card card = new Card().setId(1l).setBankAccount(account)
                 .setCardNumber("4716252569506086")
