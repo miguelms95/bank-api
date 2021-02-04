@@ -9,9 +9,9 @@ public interface BankAccountService {
 
     List <BankAccount> getBankAccountsFromCardNumber(String cardNumber);
 
-    boolean getMoney(Long accountId, double quantity);
-
-    boolean putMoney(Long valueOf, Double quantity);
-
     List<Activity> getActivity(String cardNumber);
+
+    boolean getCash(String cardNumber, Double quantity);
+
+    boolean putCash(String cardNumber, Double quantity, Long atmId);
 }

@@ -55,41 +55,37 @@ public class AtmController {
 
     }
 
-
-    @GetMapping(value = "getMoney", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity getMoney(
-            @RequestParam(value = "bankAccountId") String bankAccountId,
-            @RequestParam(value = "quantity") Double quantity
-    ) {
-        // validate
-        boolean result = bankAccountService.getMoney(Long.valueOf(bankAccountId), quantity);
-
+    @GetMapping(value = "getCash", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity getCash(
+            @RequestParam(value = "cardNumber") String cardNumber,
+            @RequestParam(value = "pin") String pin,
+            @RequestParam(value = "quantity") Double quantity) {
         HashMap <String, String> response = new HashMap <>();
-
-        if (result) {
+        if (bankValidators.validatePin(cardNumber, pin) && bankAccountService.getCash(cardNumber,quantity)) {
             response.put("message", String.format("Succesfully operation, get %s €", quantity));
-            return new ResponseEntity(response, HttpStatus.NOT_FOUND);
+            return new ResponseEntity(response, HttpStatus.OK);
         }
         response.put("message", "error while processing operation");
-        return new ResponseEntity(response, HttpStatus.OK);
+
+        return new ResponseEntity("", HttpStatus.NOT_FOUND);
+
     }
 
-    @GetMapping(value = "putMoney", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity putMoney(
-            @RequestParam(value = "bankAccountId") String bankAccountId,
-            @RequestParam(value = "quantity") Double quantity
-    ) {
-        // validate
-        boolean result = bankAccountService.putMoney(Long.valueOf(bankAccountId), quantity);
-
+    @GetMapping(value = "putCash", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity putCash(
+            @RequestParam(value = "cardNumber") String cardNumber,
+            @RequestParam(value = "pin") String pin,
+            @RequestParam(value = "quantity") Double quantity,
+            @RequestParam(value = "atmId") Long atmId) {
         HashMap <String, String> response = new HashMap <>();
-
-        if (result) {
-            response.put("message", String.format("Succesfully operation, get %s €", quantity));
-            return new ResponseEntity(response, HttpStatus.NOT_FOUND);
+        if (bankValidators.validatePin(cardNumber, pin) && bankAccountService.putCash(cardNumber,quantity, atmId)) {
+            response.put("message", String.format("Succesfully operation, put %s €", quantity));
+            return new ResponseEntity(response, HttpStatus.OK);
         }
         response.put("message", "error while processing operation");
-        return new ResponseEntity(response, HttpStatus.OK);
+
+        return new ResponseEntity("", HttpStatus.NOT_FOUND);
+
     }
 
 }

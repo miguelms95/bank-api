@@ -1,9 +1,7 @@
 package com.miguelms.bank.service.impl;
 
-import com.miguelms.bank.model.Activity;
-import com.miguelms.bank.model.BankAccount;
-import com.miguelms.bank.model.Card;
-import com.miguelms.bank.model.User;
+import com.miguelms.bank.model.*;
+import com.miguelms.bank.repository.AtmMachineRepository;
 import com.miguelms.bank.repository.BankAccountRepository;
 import com.miguelms.bank.repository.CardRepository;
 import com.miguelms.bank.repository.UserRepository;
@@ -24,11 +22,12 @@ public class BankAccountServiceImpl implements BankAccountService {
     BankAccountRepository repository;
     @Autowired
     CardRepository cardRepository;
-
     @Autowired
     UserRepository userRepository;
     @Autowired
     BankAccountRepository bankAccountRepository;
+    @Autowired
+    AtmMachineRepository atmRepository;
 
     @Override
     public List <BankAccount> getBankAccountsFromCardNumber(String cardNumber) {
@@ -37,7 +36,7 @@ public class BankAccountServiceImpl implements BankAccountService {
         if (card.isPresent()) {
             User user = card.get().getUser();
             List <BankAccount> accounts = user.getBankAccounts();
-            List<BankAccount> result = new ArrayList<>();
+            List <BankAccount> result = new ArrayList <>();
 
             for (BankAccount account : accounts) {
                 // filter musn't get accounts from other banks, just from the same
@@ -51,43 +50,52 @@ public class BankAccountServiceImpl implements BankAccountService {
     }
 
     @Override
-    public boolean getMoney(Long accountId, double quantity) {
-        Optional <BankAccount> account = bankAccountRepository.findById(accountId);
-        if(account.isPresent()){
-            BankAccount tmpAccount = account.get();
-            if(tmpAccount.getBalance() >= quantity){
-                tmpAccount.setBalance(tmpAccount.getBalance() - quantity);
-                log.info("Account: {}, extracted {} €", tmpAccount, quantity);
-                bankAccountRepository.save(tmpAccount);
-                return true;
-            }
-            log.info("Not enough money in account");
-        }
-
-        return false;
-    }
-
-    @Override
-    public boolean putMoney(Long accountId, Double quantity) {
-        Optional <BankAccount> account = bankAccountRepository.findById(accountId);
-        if(account.isPresent()){
-            BankAccount tmpAccount = account.get();
-            tmpAccount.setBalance(tmpAccount.getBalance() + quantity);
-            repository.save(tmpAccount);
-            log.info("Account: {}, added {} €", tmpAccount, quantity);
-        }
-
-        return false;
-    }
-
-    @Override
     public List <Activity> getActivity(String cardNumber) {
         List <BankAccount> accounts = getBankAccountsFromCardNumber(cardNumber);
-        List<Activity> activities = new ArrayList <>();
+        List <Activity> activities = new ArrayList <>();
         for (BankAccount account : accounts) {
             activities.addAll(account.getActivity());
         }
         return activities;
 
+    }
+
+    @Override
+    public boolean getCash(String cardNumber, Double quantity) {
+        Optional <Card> card = cardRepository.findByCardNumber(cardNumber);
+        if (card.isPresent()) {
+            if (card.get().getBankAccount() != null) {
+                BankAccount account = card.get().getBankAccount();
+                double currentCash = account.getBalance();
+                if (currentCash >= quantity) {
+                    account.setBalance(currentCash - quantity);
+                    log.info(account.toString());
+                    repository.save(account);
+                    return true;
+                }
+            }
+        }
+        log.warn("Can't get cash");
+        return false;
+    }
+
+    @Override
+    public boolean putCash(String cardNumber, Double quantity, Long atmId) {
+        Optional <Card> card = cardRepository.findByCardNumber(cardNumber);
+        Optional <AtmMachine> atm = atmRepository.findById(atmId);
+
+        if (card.isPresent() && atm.isPresent()
+                && atm.get().getBank().equals(card.get().getBankAccount().getBank())) { // check if ATM is form the same bank
+            if (card.get().getBankAccount() != null) {
+                BankAccount account = card.get().getBankAccount();
+                double currentCash = account.getBalance();
+                account.setBalance(currentCash + quantity);
+                repository.save(account);
+                log.info(account.toString());
+                return true;
+            }
+        }
+        log.warn("Can't put cash");
+        return false;
     }
 }

@@ -64,4 +64,26 @@ public class AtmControllerTest {
                 .param("pin", "9999"))
                 .andExpect(status().isNotFound());
     }
+
+    @Test
+    public void atGetCashOK() throws Exception {
+        this.mockMvc.perform(get("/getCash")
+                .contentType(MediaType.APPLICATION_JSON)
+                .param("cardNumber","1111222233334444")
+                .param("atmId", "1")
+                .param("quantity", "10")
+                .param("pin", "1234"))
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    public void atGetCashNOTAtm() throws Exception {
+        this.mockMvc.perform(get("/getCash")
+                .contentType(MediaType.APPLICATION_JSON)
+                .param("cardNumber","1111222233334444")
+                .param("atmId", "2") // this fails
+                .param("quantity", "10")
+                .param("pin", "1234"))
+                .andExpect(status().isNotFound());
+    }
 }
