@@ -8,7 +8,9 @@ import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 
@@ -24,17 +26,17 @@ public class Bank {
     private Double taxesForOtherBanks;
 
     public Bank(){
-        atmMachines = new HashSet <>();
-        bankAccounts = new HashSet <>();
+        atmMachines = new ArrayList <>();
+        bankAccounts = new ArrayList <>();
     }
 
 
     @EqualsAndHashCode.Exclude
     @OneToMany(mappedBy = "bank")
-    private Set <AtmMachine> atmMachines;
+    private List <AtmMachine> atmMachines;
 
     @EqualsAndHashCode.Exclude
     @OneToMany(mappedBy = "bank")
-    private Set <BankAccount> bankAccounts;
+    private List <BankAccount> bankAccounts;
 
 }

@@ -31,7 +31,7 @@ public class BankAccount {
 
     @EqualsAndHashCode.Exclude
     @ManyToMany
-    private Set <Card> cards;
+    private List <Card> cards;
 
     @EqualsAndHashCode.Exclude
     @ManyToMany
@@ -40,7 +40,7 @@ public class BankAccount {
     public BankAccount(){
         users = new HashSet <>();
         activity = new ArrayList <>();
-        cards = new HashSet <>();
+        cards = new ArrayList <>();
     }
 
     public BankAccount setBank(Bank bank){

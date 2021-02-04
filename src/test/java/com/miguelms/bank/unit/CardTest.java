@@ -23,6 +23,7 @@ public class CardTest {
         User user = new User().setId(1l).setName("Miguel Martinez").setBankAccounts(new HashSet <>(Arrays.asList(account)));
 
         Card card = new Card().setId(1l).setBankAccount(account)
+                .setCardNumber("4716252569506086")
                 .setUser(user).setCardType(CardType.CREDIT).setActive(true).setPin(Utils.encryptMd5("1234"));
 
         log.info(bank.toString());

@@ -17,10 +17,11 @@ public class Card {
 
     @Id
     private Long id;
-    @EqualsAndHashCode.Exclude private CardType cardType;
-    @EqualsAndHashCode.Exclude private boolean active;
-    @EqualsAndHashCode.Exclude private String pin; // encoded
-    @EqualsAndHashCode.Exclude private double limit;
+    private String cardNumber;
+    private CardType cardType;
+    private boolean active;
+    private String pin; // encoded
+    private double cardLimit;
 
     @EqualsAndHashCode.Exclude
     @ToString.Exclude
