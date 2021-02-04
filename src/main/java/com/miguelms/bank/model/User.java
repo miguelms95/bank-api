@@ -31,7 +31,7 @@ public class User {
 
     @EqualsAndHashCode.Exclude
     @ToString.Exclude
-    @ManyToMany
+    @OneToMany(mappedBy = "user")
     private List <Card> cards;
 
     public User setBankAccounts(List<BankAccount> bankAccounts){

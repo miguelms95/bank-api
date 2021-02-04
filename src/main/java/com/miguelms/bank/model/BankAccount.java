@@ -27,15 +27,15 @@ public class BankAccount {
     private Bank bank;
 
     @EqualsAndHashCode.Exclude @ToString.Exclude
-    @ManyToMany
+    @ManyToMany(mappedBy = "bankAccounts")
     private List <User> users;
 
     @EqualsAndHashCode.Exclude
-    @ManyToMany
+    @OneToMany(mappedBy = "bankAccount")
     private List <Card> cards;
 
     @EqualsAndHashCode.Exclude
-    @ManyToMany
+    @OneToMany(mappedBy = "bankAccount")
     private List <Activity> activity;
 
     public BankAccount(){
