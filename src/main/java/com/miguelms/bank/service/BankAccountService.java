@@ -10,4 +10,6 @@ public interface BankAccountService {
     List <BankAccount> getBankAccountsbyCardNumber(String cardNumber);
 
     List <BankAccountDAO> getBankAccountsbyUserId(Long userId);
+
+    boolean getMoney(Long accountId, double quantity);
 }

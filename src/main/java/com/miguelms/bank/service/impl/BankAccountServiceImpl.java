@@ -54,4 +54,21 @@ public class BankAccountServiceImpl implements BankAccountService {
         List<BankAccountDAO> b = userRepository.getBankAccountsFromUserId(userId);
         return b;
     }
+
+    @Override
+    public boolean getMoney(Long accountId, double quantity) {
+        Optional <BankAccount> account = bankAccountRepository.findById(accountId);
+        if(account.isPresent()){
+            BankAccount tmpAccount = account.get();
+            if(tmpAccount.getBalance() >= quantity){
+                tmpAccount.setBalance(tmpAccount.getBalance() - quantity);
+                log.info("Account: {}, extracted {} €", tmpAccount, quantity);
+                bankAccountRepository.save(tmpAccount);
+                return true;
+            }
+            log.info("Not enough money in account");
+        }
+
+        return false;
+    }
 }
