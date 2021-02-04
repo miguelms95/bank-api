@@ -18,4 +18,11 @@ public class AtmMachine {
     @EqualsAndHashCode.Exclude @ToString.Exclude
     @ManyToOne
     private Bank bank;
+
+    public AtmMachine setBank(Bank bank){
+        this.bank = bank;
+        bank.getAtmMachines().add(this);
+
+        return this;
+    }
 }

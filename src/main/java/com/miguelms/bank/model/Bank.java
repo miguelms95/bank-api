@@ -21,6 +21,7 @@ public class Bank {
     @Id
     private Long id;
     private String name;
+    private Double taxesForOtherBanks;
 
     public Bank(){
         atmMachines = new HashSet <>();

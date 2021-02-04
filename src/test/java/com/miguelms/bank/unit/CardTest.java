@@ -1,0 +1,40 @@
+package com.miguelms.bank.unit;
+
+import com.miguelms.bank.model.*;
+import com.miguelms.bank.utils.Utils;
+import com.sun.xml.internal.ws.policy.AssertionSet;
+import lombok.extern.slf4j.Slf4j;
+import org.junit.jupiter.api.Test;
+import org.springframework.util.Assert;
+import org.springframework.util.DigestUtils;
+
+import java.util.Arrays;
+import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
+
+@Slf4j
+public class CardTest {
+
+    @Test
+    public void testBankAccount() {
+        Bank bank = new Bank().setId(1l).setName("ING");
+        BankAccount account = new BankAccount().setId(1l).setBank(bank).setBalance(100.0);
+        User user = new User().setId(1l).setName("Miguel Martinez").setBankAccounts(new HashSet <>(Arrays.asList(account)));
+
+        Card card = new Card().setId(1l).setBankAccount(account)
+                .setUser(user).setCardType(CardType.CREDIT).setActive(true).setPin(Utils.encryptMd5("1234"));
+
+        log.info(bank.toString());
+        log.info(account.toString());
+        log.info(card.toString());
+
+
+        log.info("compare: {} with {}", account.getCards(), card);
+        Assert.isTrue(account.getCards().contains(card), "card not present in account");
+        Assert.isTrue(card.getBankAccount().equals(account), "account not linked to card");
+
+    }
+
+
+}
