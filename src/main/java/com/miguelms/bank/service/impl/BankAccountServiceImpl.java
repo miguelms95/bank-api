@@ -71,4 +71,17 @@ public class BankAccountServiceImpl implements BankAccountService {
 
         return false;
     }
+
+    @Override
+    public boolean putMoney(Long accountId, Double quantity) {
+        Optional <BankAccount> account = bankAccountRepository.findById(accountId);
+        if(account.isPresent()){
+            BankAccount tmpAccount = account.get();
+            tmpAccount.setBalance(tmpAccount.getBalance() + quantity);
+            repository.save(tmpAccount);
+            log.info("Account: {}, added {} €", tmpAccount, quantity);
+        }
+
+        return false;
+    }
 }

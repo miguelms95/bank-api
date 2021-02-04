@@ -12,4 +12,6 @@ public interface BankAccountService {
     List <BankAccountDAO> getBankAccountsbyUserId(Long userId);
 
     boolean getMoney(Long accountId, double quantity);
+
+    boolean putMoney(Long valueOf, Double quantity);
 }

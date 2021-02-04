@@ -25,3 +25,6 @@ I've decided to use an H2 database, because it's embedded in the server, lightwe
 
 * Get Money from account
 [http://localhost:8080/getMoney?bankAccountId=1&quantity=50](http://localhost:8080/getMoney?bankAccountId=1&quantity=50)
+
+* Put money into account
+[http://localhost:8080/putMoney?bankAccountId=1&quantity=50](http://localhost:8080/putMoney?bankAccountId=1&quantity=50)

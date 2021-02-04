@@ -46,4 +46,22 @@ public class AtmController {
         return new ResponseEntity(response, HttpStatus.OK);
     }
 
+    @GetMapping(value ="putMoney", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity putMoney(
+            @RequestParam(value = "bankAccountId") String bankAccountId,
+            @RequestParam(value = "quantity") Double quantity
+    ){
+        // validate
+        boolean result = bankAccountService.putMoney(Long.valueOf(bankAccountId), quantity);
+
+        HashMap <String, String> response = new HashMap <>();
+
+        if(result) {
+            response.put("message", String.format("Succesfully operation, get %s €", quantity) );
+            return new ResponseEntity(response, HttpStatus.NOT_FOUND);
+        }
+        response.put("message", "error while processing operation");
+        return new ResponseEntity(response, HttpStatus.OK);
+    }
+
 }
