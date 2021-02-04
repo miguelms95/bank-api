@@ -1,5 +1,6 @@
 package com.miguelms.bank.service.impl;
 
+import com.miguelms.bank.model.Activity;
 import com.miguelms.bank.model.BankAccount;
 import com.miguelms.bank.model.Card;
 import com.miguelms.bank.model.User;
@@ -77,5 +78,16 @@ public class BankAccountServiceImpl implements BankAccountService {
         }
 
         return false;
+    }
+
+    @Override
+    public List <Activity> getActivity(String cardNumber) {
+        List <BankAccount> accounts = getBankAccountsFromCardNumber(cardNumber);
+        List<Activity> activities = new ArrayList <>();
+        for (BankAccount account : accounts) {
+            activities.addAll(account.getActivity());
+        }
+        return activities;
+
     }
 }

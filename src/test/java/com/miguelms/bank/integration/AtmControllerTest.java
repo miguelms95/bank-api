@@ -9,6 +9,7 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -41,6 +42,25 @@ public class AtmControllerTest {
         this.mockMvc.perform(get("/accounts")
                 .contentType(MediaType.APPLICATION_JSON)
                 .param("cardNumber","123")
+                .param("pin", "9999"))
+                .andExpect(status().isNotFound());
+    }
+
+    @Test
+    public void atmActivityPinOK() throws Exception {
+        this.mockMvc.perform(get("/activity")
+                .contentType(MediaType.APPLICATION_JSON)
+                .param("cardNumber","1111222233334444")
+                .param("pin", "1234"))
+                .andDo(print())
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    public void atmActivityPinERROR() throws Exception {
+        this.mockMvc.perform(get("/activity")
+                .contentType(MediaType.APPLICATION_JSON)
+                .param("cardNumber","1111222233334444")
                 .param("pin", "9999"))
                 .andExpect(status().isNotFound());
     }

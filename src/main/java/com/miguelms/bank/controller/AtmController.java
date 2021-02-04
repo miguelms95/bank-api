@@ -36,7 +36,7 @@ public class AtmController {
                     return new ResponseEntity(Utils.toBankAccountDAO(result), HttpStatus.OK);
             }
             return new ResponseEntity("", HttpStatus.NOT_FOUND);
-        }catch (Exception e){
+        } catch (Exception e) {
             return new ResponseEntity("", HttpStatus.NOT_FOUND);
         }
 
@@ -48,12 +48,11 @@ public class AtmController {
             @RequestParam(value = "pin") String pin) {
 
         if (bankValidators.validatePin(cardNumber, pin)) {
+            return new ResponseEntity(Utils.toActivityDAO(bankAccountService.getActivity(cardNumber)), HttpStatus.OK);
         }
-        List <BankAccount> result = bankAccountService.getBankAccountsFromCardNumber(cardNumber);
 
-        if (result.isEmpty())
-            return new ResponseEntity("", HttpStatus.NOT_FOUND);
-        return new ResponseEntity(Utils.toBankAccountDAO(result), HttpStatus.OK);
+        return new ResponseEntity("", HttpStatus.NOT_FOUND);
+
     }
 
 
