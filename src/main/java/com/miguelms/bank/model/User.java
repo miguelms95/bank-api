@@ -26,7 +26,7 @@ public class User {
     }
 
     @EqualsAndHashCode.Exclude
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     private List <BankAccount> bankAccounts;
 
     @EqualsAndHashCode.Exclude

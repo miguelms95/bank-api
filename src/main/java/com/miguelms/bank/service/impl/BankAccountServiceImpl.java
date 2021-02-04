@@ -1,6 +1,5 @@
 package com.miguelms.bank.service.impl;
 
-import com.miguelms.bank.dao.BankAccountDAO;
 import com.miguelms.bank.model.BankAccount;
 import com.miguelms.bank.model.Card;
 import com.miguelms.bank.model.User;
@@ -31,28 +30,23 @@ public class BankAccountServiceImpl implements BankAccountService {
     BankAccountRepository bankAccountRepository;
 
     @Override
-    public List <BankAccount> getBankAccountsbyCardNumber(String cardNumber) {
+    public List <BankAccount> getBankAccountsFromCardNumber(String cardNumber) {
         Optional <Card> card = cardRepository.findByCardNumber(cardNumber);
         log.info(card.toString());
         if (card.isPresent()) {
             User user = card.get().getUser();
-            Iterable <BankAccount> accounts = bankAccountRepository.findAll();
-            List<BankAccount> result = new ArrayList <>(); // crazy findAll and filter at application level
-            accounts.forEach(account -> {
-                if(account.getUsers().contains(user))
-                    result.add(account);
+            List <BankAccount> accounts = user.getBankAccounts();
+            List<BankAccount> result = new ArrayList<>();
 
-            });
+            for (BankAccount account : accounts) {
+                // filter musn't get accounts from other banks, just from the same
+                if (account.getBank().getId().equals(card.get().getBankAccount().getBank().getId()))
+                    result.add(account);
+            }
             return result;
         }
 
         return new ArrayList <>();
-    }
-
-    @Override
-    public List <BankAccountDAO> getBankAccountsbyUserId(Long userId) {
-        List<BankAccountDAO> b = userRepository.getBankAccountsFromUserId(userId);
-        return b;
     }
 
     @Override

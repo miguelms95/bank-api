@@ -30,11 +30,11 @@ public class BankAccount {
     @ManyToMany(mappedBy = "bankAccounts")
     private List <User> users;
 
-    @EqualsAndHashCode.Exclude
+    @EqualsAndHashCode.Exclude @ToString.Exclude
     @OneToMany(mappedBy = "bankAccount")
     private List <Card> cards;
 
-    @EqualsAndHashCode.Exclude
+    @EqualsAndHashCode.Exclude @ToString.Exclude
     @OneToMany(mappedBy = "bankAccount")
     private List <Activity> activity;
 

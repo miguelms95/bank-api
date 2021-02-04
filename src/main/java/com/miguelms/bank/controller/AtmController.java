@@ -1,7 +1,9 @@
 package com.miguelms.bank.controller;
 
-import com.miguelms.bank.dao.BankAccountDAO;
+import com.miguelms.bank.model.BankAccount;
 import com.miguelms.bank.service.BankAccountService;
+import com.miguelms.bank.utils.Utils;
+import com.miguelms.bank.validator.BankValidators;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -19,45 +21,72 @@ public class AtmController {
     @Autowired
     BankAccountService bankAccountService;
 
-    @GetMapping(value = "accounts", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity getBankAccounts(@RequestParam(value = "userId") String userId){
+    @Autowired
+    BankValidators bankValidators;
 
-        List <BankAccountDAO> result = bankAccountService.getBankAccountsbyUserId(Long.valueOf(userId));
-        if(result.isEmpty())
+    @GetMapping(value = "accounts", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity getBankAccounts(
+            @RequestParam(value = "cardNumber") String cardNumber,
+            @RequestParam(value = "pin") String pin) {
+        try {
+            if (bankValidators.validatePin(cardNumber, pin)) {
+                List <BankAccount> result = bankAccountService.getBankAccountsFromCardNumber(cardNumber);
+
+                if (!result.isEmpty())
+                    return new ResponseEntity(Utils.toBankAccountDAO(result), HttpStatus.OK);
+            }
             return new ResponseEntity("", HttpStatus.NOT_FOUND);
-        return new ResponseEntity("", HttpStatus.OK);
+        }catch (Exception e){
+            return new ResponseEntity("", HttpStatus.NOT_FOUND);
+        }
+
     }
 
-    @GetMapping(value ="getMoney", produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value = "activity", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity getActivity(
+            @RequestParam(value = "cardNumber") String cardNumber,
+            @RequestParam(value = "pin") String pin) {
+
+        if (bankValidators.validatePin(cardNumber, pin)) {
+        }
+        List <BankAccount> result = bankAccountService.getBankAccountsFromCardNumber(cardNumber);
+
+        if (result.isEmpty())
+            return new ResponseEntity("", HttpStatus.NOT_FOUND);
+        return new ResponseEntity(Utils.toBankAccountDAO(result), HttpStatus.OK);
+    }
+
+
+    @GetMapping(value = "getMoney", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity getMoney(
             @RequestParam(value = "bankAccountId") String bankAccountId,
             @RequestParam(value = "quantity") Double quantity
-    ){
+    ) {
         // validate
         boolean result = bankAccountService.getMoney(Long.valueOf(bankAccountId), quantity);
 
         HashMap <String, String> response = new HashMap <>();
 
-        if(result) {
-            response.put("message", String.format("Succesfully operation, get %s €", quantity) );
+        if (result) {
+            response.put("message", String.format("Succesfully operation, get %s €", quantity));
             return new ResponseEntity(response, HttpStatus.NOT_FOUND);
         }
         response.put("message", "error while processing operation");
         return new ResponseEntity(response, HttpStatus.OK);
     }
 
-    @GetMapping(value ="putMoney", produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value = "putMoney", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity putMoney(
             @RequestParam(value = "bankAccountId") String bankAccountId,
             @RequestParam(value = "quantity") Double quantity
-    ){
+    ) {
         // validate
         boolean result = bankAccountService.putMoney(Long.valueOf(bankAccountId), quantity);
 
         HashMap <String, String> response = new HashMap <>();
 
-        if(result) {
-            response.put("message", String.format("Succesfully operation, get %s €", quantity) );
+        if (result) {
+            response.put("message", String.format("Succesfully operation, get %s €", quantity));
             return new ResponseEntity(response, HttpStatus.NOT_FOUND);
         }
         response.put("message", "error while processing operation");

@@ -28,4 +28,9 @@ public class CardServiceImpl implements CardService {
         }
         return false;
     }
+
+    @Override
+    public Optional <Card> findByCardnumber(String cardNumber) {
+        return cardRepository.findByCardNumber(cardNumber);
+    }
 }
