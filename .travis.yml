@@ -1,0 +1,8 @@
+language: java
+
+jdk:
+  - oraclejdk11
+script: mvn test
+
+before_install:
+  - chmod +x mvnw
