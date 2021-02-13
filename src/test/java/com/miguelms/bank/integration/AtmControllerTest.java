@@ -66,24 +66,38 @@ public class AtmControllerTest {
     }
 
     @Test
+    public void atmActivityNOPin() throws Exception {
+        this.mockMvc.perform(get("/activity")
+                .contentType(MediaType.APPLICATION_JSON)
+                .param("cardNumber","1111222233334444"))
+                .andExpect(status().is4xxClientError());
+    }
+
+    @Test
     public void atGetCashOK() throws Exception {
         this.mockMvc.perform(get("/getCash")
                 .contentType(MediaType.APPLICATION_JSON)
                 .param("cardNumber","1111222233334444")
-                .param("atmId", "1")
                 .param("quantity", "10")
                 .param("pin", "1234"))
                 .andExpect(status().isOk());
     }
 
     @Test
-    public void atGetCashNOTAtm() throws Exception {
+    public void atGetCashNOTPin() throws Exception {
         this.mockMvc.perform(get("/getCash")
                 .contentType(MediaType.APPLICATION_JSON)
                 .param("cardNumber","1111222233334444")
-                .param("atmId", "2") // this fails
-                .param("quantity", "10")
+                .param("quantity", "10"))
+                .andExpect(status().is4xxClientError());
+    }
+
+    @Test
+    public void atGetCashNOTQuantity() throws Exception {
+        this.mockMvc.perform(get("/getCash")
+                .contentType(MediaType.APPLICATION_JSON)
+                .param("cardNumber","1111222233334444")
                 .param("pin", "1234"))
-                .andExpect(status().isNotFound());
+                .andExpect(status().is4xxClientError());
     }
 }
