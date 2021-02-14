@@ -1,8 +1,9 @@
 # bank-api
-
+[![Build Status](https://travis-ci.com/miguelms95/bank-api.svg?branch=master)](https://travis-ci.com/miguelms95/bank-api)
 ## How to run
 ### Requirements
-* Docker 
+* Docker
+* Maven 
 
 #### Build
 `mvn clean package`
@@ -35,8 +36,8 @@ I've decided to use an H2 database, because it's embedded in the server, lightwe
 
 
 * Get cash from ATM
-   * OK Query [http://localhost:8080/getCash?cardNumber=1111222233334444&pin=1234&quantity=50&atmId=1](http://localhost:8080/putCash?cardNumber=1111222233334444&pin=1234&quantity=50&atmId=1)
-   * ERROR query [http://localhost:8080/getCash?cardNumber=1111222233334444&pin=1234&quantity=50&atmId=2](http://localhost:8080/putCash?cardNumber=1111222233334444&pin=1234&quantity=50&atmId=2)
+   * OK Query [http://localhost:8080/getCash?cardNumber=1111222233334444&pin=1234&quantity=50&atmId=1](http://localhost:8080/getCash?cardNumber=1111222233334444&pin=1234&quantity=50&atmId=1)
+   * ERROR query [http://localhost:8080/getCash?cardNumber=1111222233334444&pin=1234&quantity=50&atmId=2](http://localhost:8080/getCash?cardNumber=1111222233334444&pin=1234&quantity=50&atmId=2)
 
 * Put cash to ATM
    * OK Query [http://localhost:8080/putCash?cardNumber=1111222233334444&pin=1234&quantity=50&atmId=1](http://localhost:8080/putCash?cardNumber=1111222233334444&pin=1234&quantity=50&atmId=1)
